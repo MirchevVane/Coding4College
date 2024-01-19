@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <String.h>
+#include <ctype.h>
+#define max 200
+
+void transform(char *first, char *second, char *third)
+{
+    int length1, length2, length3, difference;
+    int i = 0, j = 0;
+
+    length1 = strlen(first);
+    length2 = strlen(second);
+    length3 = strlen(third);
+    int check = 0;
+    for (i = 0; i < length2; i++)
+    {
+        check = 1;
+        for (j = 0; j < length1; j++)
+        {
+            if (!(second[i + j] == first[j]))
+            {
+                check = 0;
+                break;
+            }
+        }
+        if ((check) && (length3 + length2 - length1 <= max))
+        {
+            difference = length3 - length1;
+            if (difference > 0)
+            {
+                for (j = length2 - 1; j >= i + length1; j--)
+                {
+                    second[j + difference] = second[j];
+                }
+                length2 += difference;
+            }
+            if (difference < 0)
+            {
+                for (j = i + length3; j < length2 + difference; j++)
+                {
+                    second[j] = second[j - difference];
+                }
+                length2 += difference;
+            }
+            for (j = 0; j < length3; j++)
+            {
+                second[i + j] = third[j];
+            }
+            second[length2] = '\0';
+        }
+    }
+}
+
+int main()
+{
+    char first[max] = {"student"};
+    char second[max] = {"Dushan e mnogu dobar student, megju najdobrite studenti na FEIT."};
+    char third[max] = {"peder"};
+    printf("\nFirst: %s\n", first);
+    printf("Second: %s\n", second);
+    printf("Third: %s\n", third);
+
+    transform(first, second, third);
+
+    printf("\nAFTER TRANSFORMATION:\n\n");
+    printf("First: %s\n", first);
+    printf("Second: %s\n", second);
+    printf("Third: %s\n", third);
+
+    return 0;
+}
